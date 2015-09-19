@@ -2,11 +2,29 @@ module.exports = function (grunt) {
     var pkg = grunt.file.readJSON('package.json');
 
     grunt.initConfig({
+        browserify : {
+            dist : {
+                src : ['src/index.js'],
+                dest : 'www/bundle.js'
+            }
+        },
+
+        qunit: {
+            all: ["www/qunitTest.html"]
+        },
+
         mochaTest: {
             test: {
-                src: ['test/**/*.js']
+                src: ['test/mocha/*.js']
             }
-        }
+        },
+
+        watch : {
+            scripts : {
+                files : ['src/**/*.js', 'test/**/*.js'],
+                tasks : ['browserify', 'mochaTest']
+            }
+         }
     });
 
     Object.keys(pkg.devDependencies).forEach(function (devDependency) {
@@ -15,5 +33,5 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('default', ['mochaTest']);
+    grunt.registerTask('default', ['watch']);
 };
