@@ -10818,7 +10818,6 @@ Editor.prototype = {
         // 編集画面でkeyupしたとき
         $contentArea.on('keyup', function (e) {
             info.contents = self.getContentsArr();
-            console.info(e.keyCode);
             if (e.keyCode === BACK_QUOTE) {
                 self.createKeyword($contentArea.text());
             }
@@ -10837,6 +10836,8 @@ Editor.prototype = {
             keywords.forEach(function (keyword) {
                 Ine.Window.share.keywordBar.addKeyword(keyword);
             });
+            // 不要なキーワードをリストから除去する
+            Ine.Window.share.keywordBar.autoRemoveKeywords(keywords);
         }
     },
 
@@ -10880,7 +10881,7 @@ KeywordBar.prototype = {
 
         // Observeする値
         self.observeValues = {
-            activeId: 'keyword-表紙'
+            activeId: 'main-keyword-表紙'
         };
 
         // イベントを仕掛ける
@@ -10907,6 +10908,37 @@ KeywordBar.prototype = {
             var tag = template.format(keyword, keyword);
             $stage.append(tag);
         }
+    },
+
+    // バーに存在するキーワードのうち、
+    //  * 編集中の本文に一度も登場しない
+    //  * キーワードの本文が空である
+    // であるものを自動で消去する
+    autoRemoveKeywords: function (bodyKeywords) {
+        var self = this;
+
+        var $keywordElems = self.$elem.find('.keyword');
+        var listedKeywords = [];
+        for (var i = 0; i < $keywordElems.length; i++) {
+            // main-keyword-* は勘定から除外
+            if ($keywordElems[i].id.split('-')[0] !== 'main') {
+                listedKeywords.push($keywordElems[i].innerText);
+            }
+        }
+
+        listedKeywords.forEach(function (keyword) {
+            var removeFlag = true;
+            for (var i = 0; i < bodyKeywords.length; i++) {
+                if (bodyKeywords[i] === keyword) {
+                    removeFlag = false;
+                    break;
+                }
+            }
+            if (removeFlag) {
+                var id = 'keyword-' + keyword;
+                self.$elem.find('#' + id).remove();
+            }
+        });
     },
 
     // キーワードバーの横幅と、$editorのleftを決定する
@@ -10964,7 +10996,6 @@ KeywordBar.prototype = {
                 }
             });
         });
-
     }
 };
 

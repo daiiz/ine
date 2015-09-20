@@ -36,7 +36,6 @@ Editor.prototype = {
         // 編集画面でkeyupしたとき
         $contentArea.on('keyup', function (e) {
             info.contents = self.getContentsArr();
-            console.info(e.keyCode);
             if (e.keyCode === BACK_QUOTE) {
                 self.createKeyword($contentArea.text());
             }
@@ -55,6 +54,8 @@ Editor.prototype = {
             keywords.forEach(function (keyword) {
                 Ine.Window.share.keywordBar.addKeyword(keyword);
             });
+            // 不要なキーワードをリストから除去する
+            Ine.Window.share.keywordBar.autoRemoveKeywords(keywords);
         }
     },
 
