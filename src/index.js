@@ -14,7 +14,8 @@ var app    = require('./app');
 
     // Ine.Window.* に展開
     window.Ine.Window = _.extend((window.Ine.Window || {}), {
-        Editor: require('./Editor')
+        Editor    : require('./Editor'),
+        KeywordBar: require('./KeywordBar')
     });
 
     // アプリ本体
