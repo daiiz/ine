@@ -11,9 +11,7 @@ KeywordBar.prototype = {
         var self = this;
 
         // キーワードをセットする
-
-        // キーワードバーの横幅と、$editorのleftを決定する
-        self.setWidth();
+        self.activeId = 'foo';
         // マウスイベントを仕掛ける
         self.bindEvents();
 
@@ -21,7 +19,14 @@ KeywordBar.prototype = {
 
     },
 
-    setWidth: function () {
+    setup: function () {
+        var self = this;
+
+        self.executeWidth();
+    },
+
+    // キーワードバーの横幅と、$editorのleftを決定する
+    executeWidth: function () {
         var self = this;
 
         var DEFAULT_WIDTH = 112;
@@ -42,14 +47,21 @@ KeywordBar.prototype = {
             width: maxWidth
         });
 
-        Ine.Window.elems.$editor.css({
+        Ine.Window.share.editor.$elem.css({
             left : maxWidth,
             width: window.innerWidth - maxWidth
         });
     },
 
     bindEvents: function () {
-        
+        var self = this;
+
+        var $bar = self.$elem;
+        $bar.on('click', '.keyword', function (e) {
+            $bar.find('#' + self.activeId).removeClass('active');
+            self.activeId = e.target.id;
+            $bar.find('#' + self.activeId).addClass('active');
+        });
     }
 };
 

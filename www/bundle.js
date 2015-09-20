@@ -10812,9 +10812,7 @@ KeywordBar.prototype = {
         var self = this;
 
         // キーワードをセットする
-
-        // キーワードバーの横幅と、$editorのleftを決定する
-        self.setWidth();
+        self.activeId = 'foo';
         // マウスイベントを仕掛ける
         self.bindEvents();
 
@@ -10822,7 +10820,14 @@ KeywordBar.prototype = {
 
     },
 
-    setWidth: function () {
+    setup: function () {
+        var self = this;
+
+        self.executeWidth();
+    },
+
+    // キーワードバーの横幅と、$editorのleftを決定する
+    executeWidth: function () {
         var self = this;
 
         var DEFAULT_WIDTH = 112;
@@ -10843,14 +10848,21 @@ KeywordBar.prototype = {
             width: maxWidth
         });
 
-        Ine.Window.elems.$editor.css({
+        Ine.Window.share.editor.$elem.css({
             left : maxWidth,
             width: window.innerWidth - maxWidth
         });
     },
 
     bindEvents: function () {
-        
+        var self = this;
+
+        var $bar = self.$elem;
+        $bar.on('click', '.keyword', function (e) {
+            $bar.find('#' + self.activeId).removeClass('active');
+            self.activeId = e.target.id;
+            $bar.find('#' + self.activeId).addClass('active');
+        });
     }
 };
 
@@ -10867,13 +10879,6 @@ var app = function ($) {
     var $keywordBar = $('#keywordBar');
     var $boxList    = $('#boxList');
 
-    // クラス共通で触ることができる要素
-    Ine.Window.elems = {
-        $editor    : $editor,
-        $keywordBar: $keywordBar,
-        $boxList   : $boxList
-    };
-
     // エディタクラス
     var editor     = new Ine.Window.Editor($editor);
     // キーワードバークラス
@@ -10881,9 +10886,19 @@ var app = function ($) {
     // ボックスリストを管理するクラス
     var boxList    = new Ine.Window.BoxList($boxList);
 
-    console.info(editor);
+    // クラス共通で触ることができる
+    Ine.Window.share = {
+        editor    : editor,
+        keywordBar: keywordBar,
+        boxList   : boxList
+    };
+
+    // セットアップ
+    keywordBar.setup();
+
     test($);
 };
+
 
 // 確認系
 var test = function ($) {
