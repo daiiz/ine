@@ -1,0 +1,21 @@
+{
+   "name": "ine",
+   "description": "Integrated Note Environment",
+   "version": "0.0.1",
+   "manifest_version": 2,
+   "app": {
+       "background": {
+           "scripts": ["background.js"]
+       }
+   },
+   "icons": {
+       "16" :  "ine.png",
+       "48" :  "ine.png",
+       "128":  "ine.png"
+   },
+   "permissions": [
+       "storage",
+       "unlimitedStorage",
+       "<all_urls>"
+   ]
+}
