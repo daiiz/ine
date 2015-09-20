@@ -10763,6 +10763,24 @@ return jQuery;
 },{}],3:[function(require,module,exports){
 'use strict';
 
+var BoxList = function (option) {
+    var option = option || {};
+    this.init(option || {});
+};
+
+BoxList.prototype = {
+    init: function (option) {
+        var self = this;
+
+        self.name = 'BoxList';
+    }
+};
+
+module.exports = BoxList;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
 var Editor = function (option) {
     var option = option || {};
     this.init(option || {});
@@ -10778,7 +10796,7 @@ Editor.prototype = {
 
 module.exports = Editor;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var KeywordBar = function (option) {
@@ -10797,19 +10815,20 @@ KeywordBar.prototype = {
 
 module.exports = KeywordBar;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 // アプリ本体
 // jQueryの読み込みが完了すると、これが実行される
 var app = function ($) {
-    test($);
     // エディタクラス
     var editor     = new Ine.Window.Editor();
     // キーワードバークラス
     var keywordBar = new Ine.Window.KeywordBar();
+    // ボックスリストを管理するクラス
+    var boxList    = new Ine.Window.BoxList();
 
-    console.info(keywordBar);
+    test($);
 };
 
 // 確認系
@@ -10820,7 +10839,7 @@ var test = function ($) {
 
 module.exports = app;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var base = function () {
@@ -10830,7 +10849,7 @@ var base = function () {
 
 module.exports = base;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var _ = require('underscore');
@@ -10848,7 +10867,8 @@ var app    = require('./app');
     // Ine.Window.* に展開
     window.Ine.Window = _.extend((window.Ine.Window || {}), {
         Editor    : require('./Editor'),
-        KeywordBar: require('./KeywordBar')
+        KeywordBar: require('./KeywordBar'),
+        BoxList   : require('./BoxList')
     });
 
     // アプリ本体
@@ -10856,4 +10876,4 @@ var app    = require('./app');
 
 })(jQuery);
 
-},{"./Editor":3,"./KeywordBar":4,"./app":5,"./base":6,"jquery":1,"underscore":2}]},{},[7]);
+},{"./BoxList":3,"./Editor":4,"./KeywordBar":5,"./app":6,"./base":7,"jquery":1,"underscore":2}]},{},[8]);

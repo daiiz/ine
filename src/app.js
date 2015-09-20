@@ -3,13 +3,14 @@
 // アプリ本体
 // jQueryの読み込みが完了すると、これが実行される
 var app = function ($) {
-    test($);
     // エディタクラス
     var editor     = new Ine.Window.Editor();
     // キーワードバークラス
     var keywordBar = new Ine.Window.KeywordBar();
+    // ボックスリストを管理するクラス
+    var boxList    = new Ine.Window.BoxList();
 
-    console.info(keywordBar);
+    test($);
 };
 
 // 確認系
