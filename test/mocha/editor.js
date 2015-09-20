@@ -18,5 +18,9 @@ describe('Ine.Window.Editor', function () {
         it('エディターを読み込みできる', function () {
             assert.equal(e.name, 'Editor');
         });
+
+        it('$elemが初期化されている', function () {
+            assert.equal(e.$elem, undefined);
+        });
     });
 });
