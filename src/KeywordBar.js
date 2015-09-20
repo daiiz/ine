@@ -10,9 +10,12 @@ KeywordBar.prototype = {
     init: function (option) {
         var self = this;
 
-        // キーワードをセットする
-        self.activeId = 'foo';
-        // マウスイベントを仕掛ける
+        // Observeする値
+        self.observeValues = {
+            activeId: 'foo'
+        };
+
+        // イベントを仕掛ける
         self.bindEvents();
 
         self.name = 'KeywordBar';
@@ -57,11 +60,24 @@ KeywordBar.prototype = {
         var self = this;
 
         var $bar = self.$elem;
+
+        // リスト内のキーワードがクリックされたとき
         $bar.on('click', '.keyword', function (e) {
-            $bar.find('#' + self.activeId).removeClass('active');
-            self.activeId = e.target.id;
-            $bar.find('#' + self.activeId).addClass('active');
+            var nowActiveId = self.observeValues.activeId;
+            $bar.find('#' + nowActiveId).removeClass('active');
+            self.observeValues.activeId = e.target.id;
+            $bar.find('#' + self.observeValues.activeId).addClass('active');
         });
+
+        Object.observe(self.observeValues, function (changes) {
+            changes.forEach(function (change) {
+                // activeなキーワードが変更された場合
+                if (change.name === 'activeId') {
+                    console.info(change.type, change.oldValue);
+                }
+            });
+        });
+
     }
 };
 
