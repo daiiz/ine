@@ -18,7 +18,7 @@ Editor.prototype = {
             // 略称: ucc
             // keywordIdはレンダリングの度に異なっていてよい
             contents: [
-                {keyword: '表紙', html: 'Hello, world!<br>`daiiz`', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
+                {keyword: '表紙', html: '<b>Hello, world!</b><br>`daiiz`', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
             ]
         };
         // activeIdをもつcontentsのindex
@@ -70,6 +70,7 @@ Editor.prototype = {
         if (self.userContents.contents.length > 0) {
             // #main-keyword-toppage をセットする
             // 自動でself.resetEditorが呼ばれる
+            // その後、self.createKeywordが呼ばれる
             keywordBar.setActiveId('main-keyword-toppage');
         }
     },
@@ -92,6 +93,8 @@ Editor.prototype = {
             if (content.keywordId === newKeywordId) {
                 self.$elem.find('.contents').html(content.html);
                 self.activeContentsIdx = idx;
+                // キーワードを抽出
+                self.createKeyword(self.$elem.find('.contents').text());
             }
         });
     },
@@ -122,7 +125,7 @@ Editor.prototype = {
 
     // バッククオートで囲まれた文字列を探してキーワードリストに追加する
     createKeyword: function (text) {
-        if (text.match(/\`/gi).length % 2 === 0) {
+        if (text.match(/\`/gi) !== null && text.match(/\`/gi).length % 2 === 0) {
             // バッククオートで囲まれた文字列を取得する
             var keywords = text.match(/`.+?`/gi);
             keywords = keywords.map(function (keyword) {
