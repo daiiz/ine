@@ -1,6 +1,7 @@
 'use strict';
 
-var BoxList = function (option) {
+var BoxList = function (elem, option) {
+    this.$elem = elem;
     var option = option || {};
     this.init(option || {});
 };

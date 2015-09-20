@@ -1,6 +1,7 @@
 'use strict';
 
-var KeywordBar = function (option) {
+var KeywordBar = function (elem, option) {
+    this.$elem = elem;
     var option = option || {};
     this.init(option || {});
 };

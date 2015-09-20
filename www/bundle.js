@@ -10763,7 +10763,8 @@ return jQuery;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var BoxList = function (option) {
+var BoxList = function (elem, option) {
+    this.$elem = elem;
     var option = option || {};
     this.init(option || {});
 };
@@ -10781,7 +10782,8 @@ module.exports = BoxList;
 },{}],4:[function(require,module,exports){
 'use strict';
 
-var Editor = function (option) {
+var Editor = function (elem, option) {
+    this.$elem = elem;
     var option = option || {};
     this.init(option || {});
 };
@@ -10799,7 +10801,8 @@ module.exports = Editor;
 },{}],5:[function(require,module,exports){
 'use strict';
 
-var KeywordBar = function (option) {
+var KeywordBar = function (elem, option) {
+    this.$elem = elem;
     var option = option || {};
     this.init(option || {});
 };
@@ -10821,13 +10824,19 @@ module.exports = KeywordBar;
 // アプリ本体
 // jQueryの読み込みが完了すると、これが実行される
 var app = function ($) {
-    // エディタクラス
-    var editor     = new Ine.Window.Editor();
-    // キーワードバークラス
-    var keywordBar = new Ine.Window.KeywordBar();
-    // ボックスリストを管理するクラス
-    var boxList    = new Ine.Window.BoxList();
 
+    var $editor     = $('#editor');
+    var $keywordBar = $('#keywordBar');
+    var $boxList    = $('#boxList');
+
+    // エディタクラス
+    var editor     = new Ine.Window.Editor($editor);
+    // キーワードバークラス
+    var keywordBar = new Ine.Window.KeywordBar($keywordBar);
+    // ボックスリストを管理するクラス
+    var boxList    = new Ine.Window.BoxList($boxList);
+
+    console.info(editor);
     test($);
 };
 

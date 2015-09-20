@@ -1,6 +1,7 @@
 'use strict';
 
-var Editor = function (option) {
+var Editor = function (elem, option) {
+    this.$elem = elem;
     var option = option || {};
     this.init(option || {});
 };
