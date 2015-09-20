@@ -1,4 +1,5 @@
 'use strict';
+var _ = require('underscore');
 
 var KeywordBar = function (elem, option) {
     this.$elem = elem;
@@ -26,6 +27,19 @@ KeywordBar.prototype = {
         var self = this;
 
         self.executeWidth();
+    },
+
+    // キーワードバーにキーワードを追加する
+    addKeyword: function (keyword) {
+        var self = this;
+        var template = _.template('<div class="keyword" id="<%= word %>"><%= word %></div>');
+
+        var keywordElem = self.$elem.find('#' + keyword);
+        if (keywordElem.length === 0) {
+            var $stage = self.$elem.find('#keywords');
+            var tag = template({word: keyword});
+            $stage.append(tag);
+        }
     },
 
     // キーワードバーの横幅と、$editorのleftを決定する

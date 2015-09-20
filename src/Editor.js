@@ -35,7 +35,6 @@ Editor.prototype = {
         // 編集画面でkeyupしたとき
         $contentArea.on('keyup', function (e) {
             info.contents = self.getContentsArr();
-            console.info(info);
         });
     },
 

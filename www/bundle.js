@@ -10817,7 +10817,6 @@ Editor.prototype = {
         // 編集画面でkeyupしたとき
         $contentArea.on('keyup', function (e) {
             info.contents = self.getContentsArr();
-            console.info(info);
         });
     },
 
@@ -10845,6 +10844,7 @@ module.exports = Editor;
 
 },{}],5:[function(require,module,exports){
 'use strict';
+var _ = require('underscore');
 
 var KeywordBar = function (elem, option) {
     this.$elem = elem;
@@ -10872,6 +10872,19 @@ KeywordBar.prototype = {
         var self = this;
 
         self.executeWidth();
+    },
+
+    // キーワードバーにキーワードを追加する
+    addKeyword: function (keyword) {
+        var self = this;
+        var template = _.template('<div class="keyword" id="<%= word %>"><%= word %></div>');
+
+        var keywordElem = self.$elem.find('#' + keyword);
+        if (keywordElem.length === 0) {
+            var $stage = self.$elem.find('#keywords');
+            var tag = template({word: keyword});
+            $stage.append(tag);
+        }
     },
 
     // キーワードバーの横幅と、$editorのleftを決定する
@@ -10935,7 +10948,7 @@ KeywordBar.prototype = {
 
 module.exports = KeywordBar;
 
-},{}],6:[function(require,module,exports){
+},{"underscore":2}],6:[function(require,module,exports){
 'use strict';
 
 // アプリ本体
