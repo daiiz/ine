@@ -15,7 +15,7 @@ KeywordBar.prototype = {
 
         // Observeする値
         self.observeValues = {
-            activeId: 'main-keyword-表紙'
+            activeId: undefined
         };
 
         // イベントを仕掛ける
@@ -31,15 +31,23 @@ KeywordBar.prototype = {
         self.executeWidth();
     },
 
+    setActiveId: function (id) {
+        var self = this;
+        
+        if (id !== undefined) {
+            self.observeValues.activeId = id;
+        }
+    },
+
     // キーワードバーにキーワードを追加する
     addKeyword: function (keyword) {
         var self = this;
-        var template = '<div class="keyword" id="keyword-{}">{}</div>';
+        var template = '<div class="keyword" id="keyword-{}" title="{}">{}</div>';
 
         var keywordElem = self.$elem.find('#keyword-' + keyword);
         if (keywordElem.length === 0) {
             var $stage = self.$elem.find('#keywords');
-            var tag = template.format(keyword, keyword);
+            var tag = template.format(keyword, keyword, keyword);
             $stage.append(tag);
         }
     },
