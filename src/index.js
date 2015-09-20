@@ -3,6 +3,7 @@
 var _ = require('underscore');
 
 var jQuery = require('jquery');
+var app    = require('./app');
 
 (function ($) {
 
@@ -11,5 +12,12 @@ var jQuery = require('jquery');
         base : require('./base')
     });
 
-    console.info($.fn.jquery);
+    // Ine.Window.* に展開
+    window.Ine.Window = _.extend((window.Ine.Window || {}), {
+        Editor: require('./Editor')
+    });
+
+    // アプリ本体
+    app($);
+
 })(jQuery);
