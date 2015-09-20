@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('underscore');
+
 // Pythonのformat関数の基本的なやつを真似たもの
 String.prototype.format = require('./format');
 

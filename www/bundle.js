@@ -10864,7 +10864,7 @@ module.exports = Editor;
 
 },{}],5:[function(require,module,exports){
 'use strict';
-var _ = require('underscore');
+
 // Pythonのformat関数の基本的なやつを真似たもの
 String.prototype.format = require('./format');
 
@@ -10970,7 +10970,7 @@ KeywordBar.prototype = {
 
 module.exports = KeywordBar;
 
-},{"./format":8,"underscore":2}],6:[function(require,module,exports){
+},{"./format":8}],6:[function(require,module,exports){
 'use strict';
 
 // アプリ本体
