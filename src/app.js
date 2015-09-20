@@ -24,6 +24,7 @@ var app = function ($) {
 
     // セットアップ
     keywordBar.setup();
+    editor.setup();
 
     test($);
 };
