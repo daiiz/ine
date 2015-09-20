@@ -10763,6 +10763,66 @@ return jQuery;
 },{}],3:[function(require,module,exports){
 'use strict';
 
+var Editor = function (option) {
+    var option = option || {};
+    this.init(option || {});
+};
+
+Editor.prototype = {
+    init: function (option) {
+        var self = this;
+
+        self.name = 'Editor';
+    }
+};
+
+module.exports = Editor;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+var KeywordBar = function (option) {
+    var option = option || {};
+    this.init(option || {});
+};
+
+KeywordBar.prototype = {
+    init: function (option) {
+        var self = this;
+
+        self.name = 'KeywordBar';
+
+    }
+};
+
+module.exports = KeywordBar;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+// アプリ本体
+// jQueryの読み込みが完了すると、これが実行される
+var app = function ($) {
+    test($);
+    // エディタクラス
+    var editor     = new Ine.Window.Editor();
+    // キーワードバークラス
+    var keywordBar = new Ine.Window.KeywordBar();
+
+    console.info(keywordBar);
+};
+
+// 確認系
+var test = function ($) {
+    console.info('>', $.fn.jquery);
+    console.info('>', $('#foo').text());
+}
+
+module.exports = app;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
 var base = function () {
     console.info('base');
     return true;
@@ -10770,12 +10830,13 @@ var base = function () {
 
 module.exports = base;
 
-},{}],4:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var _ = require('underscore');
 
 var jQuery = require('jquery');
+var app    = require('./app');
 
 (function ($) {
 
@@ -10784,7 +10845,15 @@ var jQuery = require('jquery');
         base : require('./base')
     });
 
-    console.info($.fn.jquery);
+    // Ine.Window.* に展開
+    window.Ine.Window = _.extend((window.Ine.Window || {}), {
+        Editor    : require('./Editor'),
+        KeywordBar: require('./KeywordBar')
+    });
+
+    // アプリ本体
+    app($);
+
 })(jQuery);
 
-},{"./base":3,"jquery":1,"underscore":2}]},{},[4]);
+},{"./Editor":3,"./KeywordBar":4,"./app":5,"./base":6,"jquery":1,"underscore":2}]},{},[7]);

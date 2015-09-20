@@ -1,6 +1,7 @@
 'use strict';
 
 var Editor = function (option) {
+    var option = option || {};
     this.init(option || {});
 };
 
