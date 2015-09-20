@@ -10860,6 +10860,11 @@ KeywordBar.prototype = {
             left : maxWidth,
             width: window.innerWidth - maxWidth
         });
+
+        // 縦線
+        Ine.Window.share.editor.$elem.find('.line').css({
+            left : maxWidth + 22,
+        });
     },
 
     bindEvents: function () {
