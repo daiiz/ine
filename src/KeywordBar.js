@@ -73,7 +73,8 @@ KeywordBar.prototype = {
             changes.forEach(function (change) {
                 // activeなキーワードが変更された場合
                 if (change.name === 'activeId') {
-                    console.info(change.type, change.oldValue);
+                    Ine.Window.share.editor.resetEditor(change.object.activeId);
+                    //console.info(change.type, change.oldValue);
                 }
             });
         });

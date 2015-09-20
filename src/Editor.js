@@ -11,6 +11,11 @@ Editor.prototype = {
         var self = this;
 
         self.name = 'Editor';
+    },
+
+    // keywordBarのアクティブなキーワードが変更されたとき呼ばれる
+    resetEditor: function (newKeyword) {
+        console.info(newKeyword);
     }
 };
 
