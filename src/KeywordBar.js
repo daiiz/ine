@@ -1,5 +1,7 @@
 'use strict';
 var _ = require('underscore');
+// Pythonのformat関数の基本的なやつを真似たもの
+String.prototype.format = require('./format');
 
 var KeywordBar = function (elem, option) {
     this.$elem = elem;
@@ -13,7 +15,7 @@ KeywordBar.prototype = {
 
         // Observeする値
         self.observeValues = {
-            activeId: 'foo'
+            activeId: 'keyword-表紙'
         };
 
         // イベントを仕掛ける
@@ -32,12 +34,12 @@ KeywordBar.prototype = {
     // キーワードバーにキーワードを追加する
     addKeyword: function (keyword) {
         var self = this;
-        var template = _.template('<div class="keyword" id="<%= word %>"><%= word %></div>');
+        var template = '<div class="keyword" id="keyword-{}">{}</div>';
 
-        var keywordElem = self.$elem.find('#' + keyword);
+        var keywordElem = self.$elem.find('#keyword-' + keyword);
         if (keywordElem.length === 0) {
             var $stage = self.$elem.find('#keywords');
-            var tag = template({word: keyword});
+            var tag = template.format(keyword, keyword);
             $stage.append(tag);
         }
     },

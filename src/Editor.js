@@ -29,13 +29,33 @@ Editor.prototype = {
 
     bindEvents: function () {
         var self = this;
+        var BACK_QUOTE = 192;
 
         var $contentArea = self.$elem.find('.contents');
         var info = self.contentsInfo;
         // 編集画面でkeyupしたとき
         $contentArea.on('keyup', function (e) {
             info.contents = self.getContentsArr();
+            console.info(e.keyCode);
+            if (e.keyCode === BACK_QUOTE) {
+                self.createKeyword($contentArea.text());
+            }
         });
+    },
+
+    // バッククオートで囲まれた文字列を探してキーワードリストに追加する
+    createKeyword: function (text) {
+        if (text.match(/\`/gi).length % 2 === 0) {
+            // バッククオートで囲まれた文字列を取得する
+            var keywords = text.match(/`.+?`/gi);
+            keywords = keywords.map(function (keyword) {
+                return keyword.substring(1, keyword.length - 1);
+            });
+            // キーワードを追加する
+            keywords.forEach(function (keyword) {
+                Ine.Window.share.keywordBar.addKeyword(keyword);
+            });
+        }
     },
 
     getContentsArr: function () {

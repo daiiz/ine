@@ -10811,13 +10811,33 @@ Editor.prototype = {
 
     bindEvents: function () {
         var self = this;
+        var BACK_QUOTE = 192;
 
         var $contentArea = self.$elem.find('.contents');
         var info = self.contentsInfo;
         // 編集画面でkeyupしたとき
         $contentArea.on('keyup', function (e) {
             info.contents = self.getContentsArr();
+            console.info(e.keyCode);
+            if (e.keyCode === BACK_QUOTE) {
+                self.createKeyword($contentArea.text());
+            }
         });
+    },
+
+    // バッククオートで囲まれた文字列を探してキーワードリストに追加する
+    createKeyword: function (text) {
+        if (text.match(/\`/gi).length % 2 === 0) {
+            // バッククオートで囲まれた文字列を取得する
+            var keywords = text.match(/`.+?`/gi);
+            keywords = keywords.map(function (keyword) {
+                return keyword.substring(1, keyword.length - 1);
+            });
+            // キーワードを追加する
+            keywords.forEach(function (keyword) {
+                Ine.Window.share.keywordBar.addKeyword(keyword);
+            });
+        }
     },
 
     getContentsArr: function () {
@@ -10845,6 +10865,8 @@ module.exports = Editor;
 },{}],5:[function(require,module,exports){
 'use strict';
 var _ = require('underscore');
+// Pythonのformat関数の基本的なやつを真似たもの
+String.prototype.format = require('./format');
 
 var KeywordBar = function (elem, option) {
     this.$elem = elem;
@@ -10858,7 +10880,7 @@ KeywordBar.prototype = {
 
         // Observeする値
         self.observeValues = {
-            activeId: 'foo'
+            activeId: 'keyword-表紙'
         };
 
         // イベントを仕掛ける
@@ -10877,12 +10899,12 @@ KeywordBar.prototype = {
     // キーワードバーにキーワードを追加する
     addKeyword: function (keyword) {
         var self = this;
-        var template = _.template('<div class="keyword" id="<%= word %>"><%= word %></div>');
+        var template = '<div class="keyword" id="keyword-{}">{}</div>';
 
-        var keywordElem = self.$elem.find('#' + keyword);
+        var keywordElem = self.$elem.find('#keyword-' + keyword);
         if (keywordElem.length === 0) {
             var $stage = self.$elem.find('#keywords');
-            var tag = template({word: keyword});
+            var tag = template.format(keyword, keyword);
             $stage.append(tag);
         }
     },
@@ -10948,7 +10970,7 @@ KeywordBar.prototype = {
 
 module.exports = KeywordBar;
 
-},{"underscore":2}],6:[function(require,module,exports){
+},{"./format":8,"underscore":2}],6:[function(require,module,exports){
 'use strict';
 
 // アプリ本体
@@ -11001,6 +11023,27 @@ module.exports = base;
 },{}],8:[function(require,module,exports){
 'use strict';
 
+var format = function() {
+    var str = this.toString();
+    var args = arguments;
+    // {} の個数を確認
+    var len_blanks = (str.match(/\{\}/g) || []).length;
+    // 引数の個数を確認
+    var len_args = args.length;
+    // 個数が一致しない場合は文字列をそのまま返す
+    if(len_args != len_blanks) return str;
+    // 個数が一致していれば置換作業を行う
+    for(var i=0; i < args.length; i++) {
+        str = str.replace(/\{\}/, args[i]);
+    }
+    return str;
+}
+
+module.exports = format;
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
 var _ = require('underscore');
 
 var jQuery = require('jquery');
@@ -11025,4 +11068,4 @@ var app    = require('./app');
 
 })(jQuery);
 
-},{"./BoxList":3,"./Editor":4,"./KeywordBar":5,"./app":6,"./base":7,"jquery":1,"underscore":2}]},{},[8]);
+},{"./BoxList":3,"./Editor":4,"./KeywordBar":5,"./app":6,"./base":7,"jquery":1,"underscore":2}]},{},[9]);
