@@ -8,6 +8,13 @@ var app = function ($) {
     var $keywordBar = $('#keywordBar');
     var $boxList    = $('#boxList');
 
+    // クラス共通で触ることができる要素
+    Ine.Window.elems = {
+        $editor    : $editor,
+        $keywordBar: $keywordBar,
+        $boxList   : $boxList
+    };
+
     // エディタクラス
     var editor     = new Ine.Window.Editor($editor);
     // キーワードバークラス
