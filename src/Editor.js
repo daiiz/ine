@@ -16,8 +16,9 @@ Editor.prototype = {
         self.userContents = {
             boxName : 'Box-0',
             // 略称: ucc
+            // keywordIdはレンダリングの度に異なっていてよい
             contents: [
-                {keyword: '表紙', html: 'Hello, world!', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
+                {keyword: '表紙', html: 'Hello, world!<br>`daiiz`', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
             ]
         };
         // activeIdをもつcontentsのindex
@@ -27,11 +28,39 @@ Editor.prototype = {
         self.name = 'Editor';
     },
 
-    setUserData: function () {
-    },
+    // keywordIdを決定して、登録して、idを返す
+    // 既に登録されている場合はfalseを返す
+    addUserContent: function (keyword, isAppData) {
+        var self = this;
 
-    addUserContents: function (content) {
+        var ucc = self.userContents.contents;
+        var existingId = false;
 
+        ucc.forEach(function (content) {
+            if (content.keyword === keyword) {
+                existingId = content.keywordId;
+            }
+        });
+
+        if (existingId === false) {
+            // 新規登録
+            if (isAppData === undefined) isAppData = false;
+            var newId = 'keyword-' + ucc.length;
+            if (isAppData) newId = 'main-' + newId;
+
+            var content = {
+                keyword    : keyword,
+                html       : '',
+                contentsArr: [],
+                isAppData  : isAppData,
+                keywordId  : newId
+            };
+
+            self.userContents.contents.push(content);
+            return newId;
+        }else {
+            return false;
+        }
     },
 
     setup: function () {
@@ -47,6 +76,8 @@ Editor.prototype = {
 
     // 外部クラスに向けたもの
     getContents: function () {
+        var self = this;
+
         return self.userContents;
     },
 
@@ -63,7 +94,6 @@ Editor.prototype = {
                 self.activeContentsIdx = idx;
             }
         });
-        console.info(self.activeContentsIdx);
     },
 
     bindEvents: function () {

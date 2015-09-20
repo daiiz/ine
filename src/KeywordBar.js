@@ -33,7 +33,7 @@ KeywordBar.prototype = {
 
     setActiveId: function (id) {
         var self = this;
-        
+
         if (id !== undefined) {
             self.observeValues.activeId = id;
         }
@@ -42,12 +42,13 @@ KeywordBar.prototype = {
     // キーワードバーにキーワードを追加する
     addKeyword: function (keyword) {
         var self = this;
-        var template = '<div class="keyword" id="keyword-{}" title="{}">{}</div>';
+        var template = '<div class="keyword" id="{}" title="{}">{}</div>';
 
-        var keywordElem = self.$elem.find('#keyword-' + keyword);
-        if (keywordElem.length === 0) {
+        var newId = Ine.Window.share.editor.addUserContent(keyword, false);
+
+        if (newId !== false) {
             var $stage = self.$elem.find('#keywords');
-            var tag = template.format(keyword, keyword, keyword);
+            var tag = template.format(newId, keyword, keyword);
             $stage.append(tag);
         }
     },
@@ -76,6 +77,7 @@ KeywordBar.prototype = {
                     break;
                 }
             }
+            // いまは動いていない
             if (removeFlag) {
                 var id = 'keyword-' + keyword;
                 self.$elem.find('#' + id).remove();

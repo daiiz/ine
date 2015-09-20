@@ -10798,8 +10798,9 @@ Editor.prototype = {
         self.userContents = {
             boxName : 'Box-0',
             // 略称: ucc
+            // keywordIdはレンダリングの度に異なっていてよい
             contents: [
-                {keyword: '表紙', html: 'Hello, world!', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
+                {keyword: '表紙', html: 'Hello, world!<br>`daiiz`', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
             ]
         };
         // activeIdをもつcontentsのindex
@@ -10809,11 +10810,39 @@ Editor.prototype = {
         self.name = 'Editor';
     },
 
-    setUserData: function () {
-    },
+    // keywordIdを決定して、登録して、idを返す
+    // 既に登録されている場合はfalseを返す
+    addUserContent: function (keyword, isAppData) {
+        var self = this;
 
-    addUserContents: function (content) {
+        var ucc = self.userContents.contents;
+        var existingId = false;
 
+        ucc.forEach(function (content) {
+            if (content.keyword === keyword) {
+                existingId = content.keywordId;
+            }
+        });
+
+        if (existingId === false) {
+            // 新規登録
+            if (isAppData === undefined) isAppData = false;
+            var newId = 'keyword-' + ucc.length;
+            if (isAppData) newId = 'main-' + newId;
+
+            var content = {
+                keyword    : keyword,
+                html       : '',
+                contentsArr: [],
+                isAppData  : isAppData,
+                keywordId  : newId
+            };
+
+            self.userContents.contents.push(content);
+            return newId;
+        }else {
+            return false;
+        }
     },
 
     setup: function () {
@@ -10829,6 +10858,8 @@ Editor.prototype = {
 
     // 外部クラスに向けたもの
     getContents: function () {
+        var self = this;
+
         return self.userContents;
     },
 
@@ -10845,7 +10876,6 @@ Editor.prototype = {
                 self.activeContentsIdx = idx;
             }
         });
-        console.info(self.activeContentsIdx);
     },
 
     bindEvents: function () {
@@ -10947,7 +10977,7 @@ KeywordBar.prototype = {
 
     setActiveId: function (id) {
         var self = this;
-        
+
         if (id !== undefined) {
             self.observeValues.activeId = id;
         }
@@ -10956,12 +10986,13 @@ KeywordBar.prototype = {
     // キーワードバーにキーワードを追加する
     addKeyword: function (keyword) {
         var self = this;
-        var template = '<div class="keyword" id="keyword-{}" title="{}">{}</div>';
+        var template = '<div class="keyword" id="{}" title="{}">{}</div>';
 
-        var keywordElem = self.$elem.find('#keyword-' + keyword);
-        if (keywordElem.length === 0) {
+        var newId = Ine.Window.share.editor.addUserContent(keyword, false);
+
+        if (newId !== false) {
             var $stage = self.$elem.find('#keywords');
-            var tag = template.format(keyword, keyword, keyword);
+            var tag = template.format(newId, keyword, keyword);
             $stage.append(tag);
         }
     },
@@ -10990,6 +11021,7 @@ KeywordBar.prototype = {
                     break;
                 }
             }
+            // いまは動いていない
             if (removeFlag) {
                 var id = 'keyword-' + keyword;
                 self.$elem.find('#' + id).remove();
