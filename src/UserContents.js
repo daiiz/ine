@@ -1,14 +1,15 @@
 'use strict';
 
-var userContents = function (option) {
+var UserContents = function (option) {
     var option = option || {};
     this.init(option || {});
 };
 
-userContents.prototype = {
+UserContents.prototype = {
     init: function (option) {
         var self = this;
 
+        self.name = 'UserContents';
         // これを直接触ることは禁止
         self.contents = {};
     },
@@ -45,4 +46,4 @@ userContents.prototype = {
     }
 };
 
-module.exports = userContents;
+module.exports = UserContents;
