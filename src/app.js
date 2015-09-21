@@ -8,18 +8,21 @@ var app = function ($) {
     var $keywordBar = $('#keywordBar');
     var $boxList    = $('#boxList');
 
+    // ユーザーデータを管理するクラス
+    var userContents = new Ine.Window.UserContents();
     // エディタクラス
-    var editor     = new Ine.Window.Editor($editor);
+    var editor       = new Ine.Window.Editor($editor);
     // キーワードバークラス
-    var keywordBar = new Ine.Window.KeywordBar($keywordBar);
+    var keywordBar   = new Ine.Window.KeywordBar($keywordBar);
     // ボックスリストを管理するクラス
-    var boxList    = new Ine.Window.BoxList($boxList);
+    var boxList      = new Ine.Window.BoxList($boxList);
 
     // クラス共通で触ることができる
     Ine.Window.share = {
-        editor    : editor,
-        keywordBar: keywordBar,
-        boxList   : boxList
+        userContents: userContents,
+        editor      : editor,
+        keywordBar  : keywordBar,
+        boxList     : boxList
     };
 
     // セットアップ

@@ -11097,7 +11097,57 @@ KeywordBar.prototype = {
 
 module.exports = KeywordBar;
 
-},{"./format":8}],6:[function(require,module,exports){
+},{"./format":9}],6:[function(require,module,exports){
+'use strict';
+
+var userContents = function (option) {
+    var option = option || {};
+    this.init(option || {});
+};
+
+userContents.prototype = {
+    init: function (option) {
+        var self = this;
+
+        // これを直接触ることは禁止
+        self.contents = {};
+    },
+
+    setup: function () {
+
+    },
+
+    // indexを与えられてcontentオブジェクトを返す
+    getContentByIndex: function (idx) {
+
+    },
+
+    // contentの総数を返す
+    getContentsLength: function () {
+
+    },
+
+    // キーワードを与えられてindexを返す
+    // 存在しない場合はnullを返す
+    getIndexByKeyword: function () {
+
+    },
+
+    // 与えられた情報からcontentオブジェクトを構成して新規登録する
+    // keywordIdを返す
+    addNewContent: function (keyword, isAppData) {
+
+    },
+
+    // 保持しているcontentsをlocalStorageにキープする
+    keepLocalStorage: function () {
+
+    }
+};
+
+module.exports = userContents;
+
+},{}],7:[function(require,module,exports){
 'use strict';
 
 // アプリ本体
@@ -11108,18 +11158,21 @@ var app = function ($) {
     var $keywordBar = $('#keywordBar');
     var $boxList    = $('#boxList');
 
+    // ユーザーデータを管理するクラス
+    var userContents = new Ine.Window.UserContents();
     // エディタクラス
-    var editor     = new Ine.Window.Editor($editor);
+    var editor       = new Ine.Window.Editor($editor);
     // キーワードバークラス
-    var keywordBar = new Ine.Window.KeywordBar($keywordBar);
+    var keywordBar   = new Ine.Window.KeywordBar($keywordBar);
     // ボックスリストを管理するクラス
-    var boxList    = new Ine.Window.BoxList($boxList);
+    var boxList      = new Ine.Window.BoxList($boxList);
 
     // クラス共通で触ることができる
     Ine.Window.share = {
-        editor    : editor,
-        keywordBar: keywordBar,
-        boxList   : boxList
+        userContents: userContents,
+        editor      : editor,
+        keywordBar  : keywordBar,
+        boxList     : boxList
     };
 
     // セットアップ
@@ -11138,7 +11191,7 @@ var test = function ($) {
 
 module.exports = app;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var base = function () {
@@ -11148,7 +11201,7 @@ var base = function () {
 
 module.exports = base;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var format = function() {
@@ -11169,7 +11222,7 @@ var format = function() {
 
 module.exports = format;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var _ = require('underscore');
@@ -11186,9 +11239,10 @@ var app    = require('./app');
 
     // Ine.Window.* に展開
     window.Ine.Window = _.extend((window.Ine.Window || {}), {
-        Editor    : require('./Editor'),
-        KeywordBar: require('./KeywordBar'),
-        BoxList   : require('./BoxList')
+        Editor      : require('./Editor'),
+        KeywordBar  : require('./KeywordBar'),
+        BoxList     : require('./BoxList'),
+        UserContents: require('./UserContents')
     });
 
     // アプリ本体
@@ -11196,4 +11250,4 @@ var app    = require('./app');
 
 })(jQuery);
 
-},{"./BoxList":3,"./Editor":4,"./KeywordBar":5,"./app":6,"./base":7,"jquery":1,"underscore":2}]},{},[9]);
+},{"./BoxList":3,"./Editor":4,"./KeywordBar":5,"./UserContents":6,"./app":7,"./base":8,"jquery":1,"underscore":2}]},{},[10]);
