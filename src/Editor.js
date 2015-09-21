@@ -18,7 +18,7 @@ Editor.prototype = {
             // 略称: ucc
             // keywordIdはレンダリングの度に異なっていてよい
             contents: [
-                {keyword: '表紙', html: '<b>Hello, world!</b><br>`daiiz`', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
+                {keyword: '表紙', html: 'Hello, world!<br>`daiiz`', contentsArr: [], isAppData: true, keywordId: 'main-keyword-toppage'}
             ]
         };
         // activeIdをもつcontentsのindex

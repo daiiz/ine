@@ -109,12 +109,17 @@ KeywordBar.prototype = {
 
         Ine.Window.share.editor.$elem.css({
             left : maxWidth,
-            width: window.innerWidth - maxWidth
+            width: window.innerWidth - maxWidth - 40
         });
 
         // 縦線
         Ine.Window.share.editor.$elem.find('.line').css({
             left : maxWidth + 22,
+        });
+
+        // .contentsエリア
+        Ine.Window.share.editor.$elem.find('.contents').css({
+            width : window.innerWidth - maxWidth - 40 - 34,
         });
     },
 
