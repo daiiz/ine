@@ -10,8 +10,9 @@ UserContents.prototype = {
         var self = this;
 
         self.name = 'UserContents';
-        // これを直接触ることは禁止
-        self.contents = {};
+        // これらを直接触ることは禁止
+        self.boxLists = {};
+        self.editorContents = {};
     },
 
     setup: function () {
